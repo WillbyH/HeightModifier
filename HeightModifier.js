@@ -51,6 +51,12 @@ function affect_selection(moveUp) {
           } else {
             element.baseHeight--;
           }
+        } else if (filters[filter]=="scenery"&&(element.type=="small_scenery"||element.type=="large_scenery"||element.type=="wall")) {
+          if (moveUp) {
+            element.baseHeight++;
+          } else {
+            element.baseHeight--;
+          }
         } else {
           if (element.type==filters[filter]) {
             if (moveUp) {
@@ -65,7 +71,7 @@ function affect_selection(moveUp) {
   }
 }
 
-var filters = ["all_obj","footpath","small_scenery","large_scenery","wall","track","surface","all"];
+var filters = ["all_obj","track","footpath","scenery","small_scenery","large_scenery","wall","surface","all"];
 
 function hm_window() {
   widgets = []
@@ -134,7 +140,7 @@ function hm_window() {
       height: 15,
       name: "filter_dropdown",
       text: "",
-      items: ["All but Surface", "Paths", "Small Scenery", "Large Scenery", "Wall", "Tracks", "Surface", "All"],
+      items: ["Everything except surface", "Ride tracks", "Footpaths", "Scenery only", "Scenery (small)", "Scenery (large)", "Walls", "Surface", "Everything"],
       selectedIndex: filter,
       onChange: function onChange(e) {
           filter = e;
@@ -214,7 +220,7 @@ function main() {
 
 registerPlugin({
     name: 'Height Modifier',
-    version: '1.1.0',
+    version: '1.2.0',
     licence: 'MIT',
     authors: ['Willby', 'sph'],
     type: 'local',
