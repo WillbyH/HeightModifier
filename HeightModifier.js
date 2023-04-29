@@ -128,7 +128,7 @@ function hm_window() {
       height: 15,
       name: "filter_dropdown",
       text: "",
-      items: ["All", "Paths", "Small Sceneary", "Large Sceneary", "Wall", "Tracks", "Surface"],
+      items: ["All", "Paths", "Small Scenery", "Large Scenery", "Wall", "Tracks", "Surface"],
       selectedIndex: filter,
       onChange: function onChange(e) {
           filter = e;
@@ -208,7 +208,7 @@ function main() {
 
 registerPlugin({
     name: 'Height Modifier',
-    version: '1.0',
+    version: '1.0.1',
     licence: 'MIT',
     authors: ['Willby'],
     type: 'local',
