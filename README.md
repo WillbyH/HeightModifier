@@ -1,5 +1,5 @@
 # HeightModifier
-Change the height of elements in a selection.
+Change the height of elements in a selection - now with multiplayer support! (requires the "Modify Tile" permission)
 
 ### Put the HeightModifier.js file in your plugins folder.
 
