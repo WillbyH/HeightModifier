@@ -33,6 +33,11 @@ function finishSelection() { // Safe the final section area
 }
 
 function affect_selection(moveUp) {
+  if (!currentPlayerHasPermissions())
+  {
+    ui.showError("Can't do this...", "Permission denied (Modify Tile)");
+    return;
+  }
   for (var x = left; x <= right; x++) {
     for (var y = top; y <= bottom; y++) {
       var tile = map.getTile(x, y);
@@ -40,35 +45,41 @@ function affect_selection(moveUp) {
       for (var i = 0; i < tile.numElements; i++) {
         var element = tile.getElement(i);
         if (filters[filter]=="all") {
-          if (moveUp) {
-            element.baseHeight++;
-          } else {
-            element.baseHeight--;
-          }
+          affect_element(x, y, i, moveUp);
         } else if (filters[filter]=="all_obj"&&element.type!="surface") {
-          if (moveUp) {
-            element.baseHeight++;
-          } else {
-            element.baseHeight--;
-          }
+          affect_element(x, y, i, moveUp);
         } else if (filters[filter]=="scenery"&&(element.type=="small_scenery"||element.type=="large_scenery"||element.type=="wall")) {
-          if (moveUp) {
-            element.baseHeight++;
-          } else {
-            element.baseHeight--;
-          }
+          affect_element(x, y, i, moveUp);
         } else {
           if (element.type==filters[filter]) {
-            if (moveUp) {
-              element.baseHeight++;
-            } else {
-              element.baseHeight--;
-            }
+            affect_element(x, y, i, moveUp);
           }
         }
       }
     }
   }
+}
+
+function affect_element(x, y, index, moveUp)
+{
+  context.executeAction("tilemodify", {
+    x: x * 32,
+    y: y * 32,
+    setting: 6,
+    value1: index,
+    value2: moveUp ? 1 : -1,
+  });
+}
+
+function currentPlayerHasPermissions()
+{
+  if (network.mode == "none")
+  {
+    return true;
+  }
+
+  var playerGroup = network.getGroup(network.currentPlayer.group);
+  return playerGroup.permissions.indexOf("modify_tile") >= 0;
 }
 
 var filters = ["all_obj","track","footpath","scenery","small_scenery","large_scenery","wall","surface","all"];
@@ -214,15 +225,17 @@ function main() {
           if (window != null) window.close();
         }
     });
-
   });
 }
 
 registerPlugin({
     name: 'Height Modifier',
-    version: '1.2.0',
+    version: '1.3.0',
     licence: 'MIT',
-    authors: ['Willby', 'sph'],
-    type: 'local',
+    authors: [
+      'Willby',
+      'sph',
+      'Katherine Norton (KatieZeldaKat)'],
+    type: 'remote',
     main: main
 });
